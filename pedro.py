@@ -38,3 +38,52 @@ def test_play_button():
         assert video_container.is_displayed()
     finally:
         driver.quit()
+
+
+def is_valid_number(text):
+    try:
+        float(text)
+        return True
+    except ValueError:
+        return False
+
+
+def is_in_reasonable_temperature_range(temperature):
+    return temperature >= -100 and temperature <= 150
+
+
+def test_temperature_text():
+    driver = webdriver.Chrome(service=service)
+    try:
+        driver.get("https://www.ut.edu")
+        temperature_text = driver.find_element(
+            By.XPATH, f"//span[@class='js--weather-temperature']"
+        )
+        assert temperature_text.is_displayed()
+        assert temperature_text.text.find("°") != -1
+        text_temperature = temperature_text.text.replace("°", "")
+        assert is_valid_number(text_temperature)
+        assert is_in_reasonable_temperature_range(float(text_temperature))
+    finally:
+        driver.quit()
+
+
+def test_search_input():
+    driver = webdriver.Chrome(service=service)
+    try:
+        driver.get("https://www.ut.edu")
+        start_search_button = driver.find_element(
+            By.XPATH,
+            f"//li[@class='search']//a[@href='#']",
+        )
+        start_search_button.click()
+        sleep(2)
+        search_input = driver.find_element(By.XPATH, f"//input[@id='searchInput']")
+        search_input.send_keys("Computer Science")
+        submit_button = driver.find_element(
+            By.XPATH, f"//button[@aria-label='Submit Search']"
+        )
+        submit_button.click()
+        assert "/search-results?q=Computer+Science" in driver.current_url
+    finally:
+        driver.quit()
