@@ -8,16 +8,16 @@ from time import sleep
 service = Service()
 
 
-# def test_apply_now():
-#     driver = webdriver.Chrome(service=service)
-#     try:
-#         driver.get("https://www.ut.edu")
-#         element = driver.find_element(By.XPATH, f"//a[@title='Apply Now']")
-#         assert element.is_displayed()
-#         element.click()
-#         assert "/apply" in driver.current_url
-#     finally:
-#         driver.quit()
+def test_apply_now_link():
+    driver = webdriver.Chrome(service=service)
+    try:
+        driver.get("https://www.ut.edu")
+        element = driver.find_element(By.XPATH, f"//a[@title='Apply Now']")
+        assert element.is_displayed()
+        element.click()
+        assert "/apply" in driver.current_url
+    finally:
+        driver.quit()
 
 
 def test_play_button():
