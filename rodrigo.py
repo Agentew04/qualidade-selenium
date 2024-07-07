@@ -1,12 +1,6 @@
-from lib2to3.pgen2 import driver
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.service import Service
 from time import sleep
 
 
@@ -14,14 +8,14 @@ def test_giving_button():
     firefox_driver = webdriver.Firefox()
     firefox_driver.get("https://www.ut.edu")
     sleep(1)
-    givingButton = firefox_driver.find_element(By.XPATH, '//*[@id="page"]/header/div[1]/div[2]/nav/ul/li[5]/a')
-    assert givingButton is not None
+    giving_button = firefox_driver.find_element(By.XPATH, '//*[@id="page"]/header/div[1]/div[2]/nav/ul/li[5]/a')
+    assert giving_button is not None
     print('Botao existe')
     sleep(1)
-    assert givingButton.is_displayed()
+    assert giving_button.is_displayed()
     print('Botao esta aparecendo')
     sleep(1)
-    givingButton.click()
+    giving_button.click()
     assert firefox_driver.current_url == "https://www.ut.edu/development-and-university-relations"
     sleep(1)
 
@@ -46,10 +40,14 @@ def testa_formulario_doacao():
     chrome_driver.get('https://www.ut.edu/development-and-university-relations/give-now')
     print('Esperando 10s para js atualizar')
     sleep(10)
-    fifty_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGivingLevels"]/div[2]/div/label')
-    fifty_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGivingLevel2"]')
-    hundred_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGivingLevels"]/div[4]/div/label')
-    hundred_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGivingLevel4"]')
+    fifty_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGiving'
+                                                                         'Levels"]/div[2]/div/label')
+    # fifty_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGiving'
+    #                                                                     'Level2"]')
+    hundred_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGiving'
+                                                                           'Levels"]/div[4]/div/label')
+    # hundred_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGiving'
+    #                                                                       'Level4"]')
     assert fifty_dollars_donation_button is not None
     print('Botao de 50 dolares existe')
     assert hundred_dollars_donation_button is not None
@@ -147,7 +145,36 @@ def test_expander_admissions():
 
     lis[-1].click()
     assert firefox_driver.current_url == 'https://www.ut.edu/admissions/spartan-ambassadors'
-
-
     firefox_driver.quit()
 
+
+def test_expander_academics():
+    firefox_driver = webdriver.Firefox()
+    firefox_driver.get("https://www.ut.edu")
+
+    academics = firefox_driver.find_element(By.XPATH, '//*[@id="page"]/header/div[1]/div[3]/nav/ul/li[3]/a')
+    assert academics is not None
+    assert academics.is_displayed()
+    sleep(4)
+
+    ActionChains(firefox_driver).move_to_element(academics).perform()
+    sleep(3)
+    parent = academics.find_element(By.XPATH, './..')
+    ul = parent.find_element(By.XPATH, './ul')
+    lis = ul.find_elements(By.XPATH, '*')
+    sleep(3)
+    assert len(lis) == 7
+    print("todos elementos estao ali")
+
+    sleep(3)
+
+    for li in lis:
+        ActionChains(firefox_driver).move_to_element(li).perform()
+        sleep(1)
+        assert li.is_displayed()
+        print('Elemento visivel')
+        sleep(1)
+
+    lis[-1].click()
+    assert firefox_driver.current_url == 'https://www.ut.edu/academics/accreditation'
+    firefox_driver.quit()
