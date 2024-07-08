@@ -8,6 +8,7 @@ from datetime import datetime
 
 service = Service()
 
+# Testará se a data dos eventos mostrados é a data atual (mês e ano)
 def test_events_date():
     driver = webdriver.Chrome(service=service)
     try:
@@ -26,6 +27,23 @@ def test_events_date():
         driver.quit()
 
 
+#Testará se o botão de play do vídeo dos estudantes está funcionando corretamente
+def test_students_video_play_button():
+    driver = webdriver.Chrome(service=service)
+    try:
+        driver.get("https://www.ut.edu")
+        element = driver.find_element(By.XPATH, f"//button[@class='video--vertical__button']")
+        assert element.is_displayed()
+        element.click()
+        sleep(2)
+
+        videoIframe = driver.find_element(By.CLASS_NAME, "video--vertical__iFrame")
+        assert videoIframe.is_displayed()
+    finally:
+        driver.quit()
+
+
+#Testará se o botão de acessibilidade está funcionando corretamente (outros botões da acessibilidade não puderam ser selecionados pelo Selenium por algum motivo)
 def test_acessibility_button():
     driver = webdriver.Chrome(service=service)
     try:
@@ -39,6 +57,8 @@ def test_acessibility_button():
         
     finally:
         driver.quit()
+
+
 
 
 
