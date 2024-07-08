@@ -19,7 +19,14 @@ def test_giving_button():
     assert firefox_driver.current_url == "https://www.ut.edu/development-and-university-relations"
     sleep(1)
 
-    sleep(10)
+    cookie_button = firefox_driver.find_element(By.XPATH, '//*[@id="page"]/section[1]/div/div/div[2]/a')
+    assert cookie_button is not None
+    print('Botao de cookies existe')
+    assert cookie_button.is_displayed()
+    print('Botao de cookies aparece')
+    cookie_button.click()
+
+    sleep(4)
     give_now_button = firefox_driver.find_element(By.XPATH, '//*[@id="content"]/div/div/div[2]/div/div/ul/li[2]/a')
     assert give_now_button is not None
     print('Botao Give Now existe')
@@ -42,12 +49,8 @@ def testa_formulario_doacao():
     sleep(10)
     fifty_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGiving'
                                                                          'Levels"]/div[2]/div/label')
-    # fifty_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGiving'
-    #                                                                     'Level2"]')
     hundred_dollars_donation_button = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdlstGiving'
                                                                            'Levels"]/div[4]/div/label')
-    # hundred_dollars_donation_input = chrome_driver.find_element(By.XPATH, '//*[@id="bboxdonation_gift_rdGiving'
-    #                                                                       'Level4"]')
     assert fifty_dollars_donation_button is not None
     print('Botao de 50 dolares existe')
     assert hundred_dollars_donation_button is not None
@@ -110,8 +113,15 @@ def testa_formulario_doacao():
     assert submit.is_displayed()
 
     ActionChains(chrome_driver).move_to_element(submit).perform()
-    assert submit.value_of_css_property("background-color") == "rgba(0, 178, 0, 1)"
-    assert submit.value_of_css_property("border") == "0 solid rgba(0, 178, 0, 1)"
+    background_color = submit.value_of_css_property("background-color")
+    background_valid = background_color == "rgba(0, 178, 0, 1)" or background_color == "rgba(0, 178, 0)"
+    assert background_valid
+
+    border_color = submit.value_of_css_property("border")
+    print(border_color)
+    border_valid = (border_color == "0px solid rgba(0, 178, 0, 1)" or border_color == "0px solid rgb(0, 178, 0)"
+                    or border_color == "0 solid rgb(0, 178, 0)" or border_color == "0 solid rgba(0, 178, 0, 1)")
+    assert border_valid
     sleep(1)
     chrome_driver.quit()
 
