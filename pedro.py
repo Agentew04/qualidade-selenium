@@ -24,17 +24,11 @@ def test_play_button():
     driver = webdriver.Chrome(service=service)
     try:
         driver.get("https://www.ut.edu")
-        scrollToElement = driver.find_element(
-            By.XPATH, f"//section[@class='tray tray-instagram']"
-        )
-        actions = ActionChains(driver)
-        actions.move_to_element(scrollToElement).perform()
+        driver.execute_script("window.scrollTo(0, 1000);")
         element = driver.find_element(By.XPATH, f"//img[@alt='Play']")
         assert element.is_displayed()
         element.click()
-        video_container = driver.find_element(
-            By.XPATH, f"//div[@class='html5-video-container']"
-        )
+        video_container = driver.find_element(By.CLASS_NAME, "mfp-content")
         assert video_container.is_displayed()
     finally:
         driver.quit()
