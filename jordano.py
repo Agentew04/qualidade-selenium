@@ -13,7 +13,6 @@ def test_events_date():
     driver = webdriver.Chrome(service=service)
     try:
         driver.get("https://www.ut.edu/campus-life/calendar")
-        sleep(5)
         
         iframe = driver.find_element(By.ID, "trumba.spud.0.iframe")
         driver.switch_to.frame(iframe)
@@ -23,6 +22,20 @@ def test_events_date():
 
         expected_date = f"{datetime.now().strftime('%B')} {datetime.now().year}"
         assert eventsDate.text == expected_date
+    finally:
+        driver.quit()
+
+# Testará se o botão de mostrar todos os eventos está funcionando corretamente
+def test_view_all_events_button():
+    driver = webdriver.Chrome(service=service)
+    try:
+        driver.get("https://www.ut.edu")
+
+        element = driver.find_element(By.XPATH, f"//a[@title='View All Events']")
+        assert element.is_displayed()
+        
+        driver.execute_script("arguments[0].click();", element)
+        assert "/campus-life/calendar" in driver.current_url
     finally:
         driver.quit()
 
