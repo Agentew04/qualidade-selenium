@@ -8,7 +8,10 @@ from time import sleep
 service = Service()
 
 
-driver = webdriver.Chrome(service=service)
+options = webdriver.ChromeOptions()
+options.add_argument("--start-maximized")
+driver = webdriver.Chrome(service=service, options=options)
+
 
 
 def test_apply_now_link():
