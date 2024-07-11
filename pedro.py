@@ -13,7 +13,6 @@ options.add_argument("--start-maximized")
 driver = webdriver.Chrome(service=service, options=options)
 
 
-
 def test_apply_now_link():
     driver.get("https://www.ut.edu")
     element = driver.find_element(By.XPATH, f"//a[@title='Apply Now']")
@@ -25,7 +24,7 @@ def test_apply_now_link():
 
 def test_play_button():
     driver.get("https://www.ut.edu")
-    driver.execute_script("window.scrollTo(0, 1600);")
+    driver.execute_script("window.scrollTo(0, 1000);")
     sleep(3)
     element = driver.find_element(By.XPATH, f"//img[@alt='Play']")
     assert element.is_displayed()
